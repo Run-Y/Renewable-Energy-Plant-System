@@ -14,7 +14,7 @@ object APIClient extends DataFetcher {
 
   implicit val rawRecordReads: Reads[RawRecord] = Json.reads[RawRecord] // JSON parser for RawRecord
 
-  // Main method to fetch all data as EnergyRecord list
+  // fetch all data as EnergyRecord list
   def fetchData(datasetId: String): Try[List[EnergyRecord]] = Try {
     fetchAllPages(datasetId)
   }
