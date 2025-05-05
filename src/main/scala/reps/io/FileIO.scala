@@ -9,22 +9,22 @@ import scala.util.Try
 object FileIO {
 
   def writeToFile(filename: String, data: List[EnergyRecord]): Try[Unit] = Try {
-    val writer = new BufferedWriter(new FileWriter(filename))
+    val writer = new BufferedWriter(new FileWriter(filename)) // open file for writing
     data.foreach { record =>
-      writer.write(s"${record.timestamp},${record.value}\n")
+      writer.write(s"${record.timestamp},${record.value}\n") // write each record
     }
-    writer.close()
+    writer.close() // close file
   }
 
   def readFromFile(filename: String): Try[List[EnergyRecord]] = Try {
-    val source = Source.fromFile(filename)
+    val source = Source.fromFile(filename) // open file for reading
     val records = source.getLines().toList.flatMap { line =>
-      val parts = line.split(",")
+      val parts = line.split(",") // split line into parts
       if (parts.length == 2)
-        Try(EnergyRecord(parts(0), parts(1).toDouble)).toOption
-      else None
+        Try(EnergyRecord(parts(0), parts(1).toDouble)).toOption // parse record
+      else None // skip bad line
     }
-    source.close()
+    source.close() // close file
     records
   }
-}
+

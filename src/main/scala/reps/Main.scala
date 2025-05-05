@@ -163,19 +163,18 @@ object Main {
 
   def handlePlantDataView(): Unit = {
     println("Enter start date (e.g. 2025-05-01):")
-    val from = readLine().trim + "T00:00:00Z"
+    val from = readLine().trim + "T00:00:00Z" // start time
 
     println("Enter end date (e.g. 2025-05-03):")
-    val to = readLine().trim + "T23:59:59Z"
+    val to = readLine().trim + "T23:59:59Z"   // end time
 
     println("Select display granularity: 1. Hourly 2. Daily 3. Weekly 4. Monthly")
-    val granularity = readLine().trim
+    val granularity = readLine().trim         // time granularity
 
     println("Sort by time descending? (Y/N)")
-    val descending = readLine().trim.toUpperCase == "Y"
+    val descending = readLine().trim.toUpperCase == "Y" // sort order
 
-
-    DataAnalysis.viewPlantData(from, to, granularity, descending)
+    DataAnalysis.viewPlantData(from, to, granularity, descending) // view data
   }
 
 
