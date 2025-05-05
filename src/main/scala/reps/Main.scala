@@ -46,16 +46,19 @@ object Main {
   }
 
 
+  // Simulate controlling an energy source
   def controlEnergySource(): Unit = {
     println("Select the source to control: 1. Solar 2. Wind 3. Hydropower")
     val input = readLine().trim
 
+    // Map input to source names
     val sources = Map(
       "1" -> "Solar panels",
       "2" -> "Wind turbines",
       "3" -> "Hydropower generators"
     )
 
+    // Match user input and simulate control
     sources.get(input) match {
       case Some(source) =>
         println(s"Initializing control interface for $source...")
@@ -67,6 +70,7 @@ object Main {
     }
   }
 
+  // Collect data from API and store in a file
   def collectAndStoreData(): Unit = {
     println("Select the source: 1. Solar 2. Wind 3. Hydropower 4. Power Plant Total Generation")
     val src = readLine().trim
@@ -76,6 +80,7 @@ object Main {
     println("Enter end date (e.g. 2025-05-03):")
     val toDate = readLine().trim
 
+    // Map source input to dataset ID and file name
     val (name, id, filename) = src match {
       case "1" => ("Solar", "247", "solar.csv")
       case "2" => ("Wind", "181", "wind.csv")
@@ -84,24 +89,28 @@ object Main {
       case _   => ("", "", "")
     }
 
+    // Validate selection
     if (id.nonEmpty) {
+      // Validate start date format
       if (!fromDate.matches("""\d{4}-\d{2}-\d{2}""")) {
         println("Invalid start date format. Please enter the date in the format 'YYYY-MM-DD'.")
-        println("For example: enter '2025-05-01' for May 1, 2025.")
         return
       }
 
+      // Validate end date format
       if (!toDate.matches("""\d{4}-\d{2}-\d{2}""")) {
         println("Invalid end date format. Please enter the date in the format 'YYYY-MM-DD'.")
-        println("For example: enter '2025-05-03' for May 3, 2025.")
         return
       }
 
+      // Build time range strings
       val startOpt = Some(fromDate + "T00:00:00Z")
       val endOpt = Some(toDate + "T23:59:59Z")
 
+      // Fetch data from API
       val data = APIClient.fetchAllPages(id, startTime = startOpt, endTime = endOpt)
 
+      // Write data to file if not empty
       if (data.nonEmpty) {
         FileIO.writeToFile(filename, data)
         println(s"$name data written to $filename (${data.size} records)")
@@ -114,6 +123,7 @@ object Main {
       println("Invalid source selection.")
     }
   }
+
 
 
 
